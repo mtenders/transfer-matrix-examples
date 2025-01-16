@@ -1,6 +1,16 @@
 ### A Pluto.jl notebook ###
 # v0.20.4
 
+#> [frontmatter]
+#> title = "Surface phonon polariton in 6H-SiC"
+#> date = "2025-01-16"
+#> tags = ["julia", "optics", "tmm", "transfer matrix"]
+#> description = "Example notebook using GeneralizedTransferMatrixMethod.jl."
+#> 
+#>     [[frontmatter.author]]
+#>     name = "Michael T. Enders"
+#>     url = "https://github.com/mtenders"
+
 using Markdown
 using InteractiveUtils
 
