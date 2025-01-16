@@ -142,7 +142,7 @@ result = [Rₚₚ(k_i, 30°, otto(g_i)) for k_i in ks, g_i in gaps]
 
 # ╔═╡ bcad1a5f-3ad5-45a7-b7c7-40df5a1b80de
 md"""
-### Vizualizing the result
+## Vizualizing the result
 
 We use the `Plots.jl` library to visualize the reflectivities we calculated.
 """
