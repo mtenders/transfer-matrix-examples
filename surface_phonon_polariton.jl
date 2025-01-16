@@ -164,6 +164,10 @@ plot(
     label = gaps',
 	linewidth=3,
 	framestyle=:box,
+	legendtitle="Air gap",
+	fg_legend = :false,
+	legendtitlefontsize=9,
+	legendtitlefontvalign=:center,
 	grid = false
 )
 
