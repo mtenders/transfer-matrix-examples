@@ -33,6 +33,10 @@ using Unzip
 # Import necessary units
 using Unitful: °, cm, μm, nm
 
+# ╔═╡ 535547e5-5be3-4a38-8f73-e3ea2a6a2289
+# refractiveindex.info material database
+using RefractiveIndex
+
 # ╔═╡ db7cbb0f-fa72-4c5e-b100-979b2e3e0ff9
 # Julia standerd library for Matrix stuff
 using LinearAlgebra
@@ -60,24 +64,15 @@ To begin, we need to define the permittivities of the materials used in the laye
 """
 
 # ╔═╡ 24acb5fe-daf5-4bb7-9d1b-24041b6e1dfe
-function n_KRS5(λ)
-	x = λ * 1e6 # Make sure λ is entered in [m]
-	sqrt(
-		1 + 1.8293958./(1-0.0225./x.^2) +
-		1.6675593./(1-0.0625./x.^2) +
-		1.1210424./(1-0.1225./x.^2)+
-		0.04513366./(1-0.2025./x.^2)+
-		12.380234./(1-27089.737./x.^2)
-	)
-end
+RI_KRS5 = RefractiveMaterial("https://refractiveindex.info/?shelf=other&book=TlBr-TlI&page=Rodney")
 
 # ╔═╡ ffbb33dd-93d9-4633-b81e-f09cbfc73f8b
 md"""
-Now we can use the `@permittivity` macro to define our material. This macro takes the name we want our material to have and a function that takes the wavelength λ in meters and returns corresponding the permittivity tensor.
+Now we can use the `@permittivity` macro to define our material.
 """
 
 # ╔═╡ 931a2b1a-9da8-4bc2-8ad9-54f9f82d49b2
-@permittivity "KRS5" λ -> n_KRS5(λ)^2 * Diagonal(ones(3));
+@permittivity "KRS5" RI_KRS5
 
 # ╔═╡ ee781d7f-9eef-4ce9-914a-dcab67405925
 md"""
@@ -183,13 +178,15 @@ GeneralizedTransferMatrixMethod = "a1920c5b-c27b-4422-a8d5-0f4c3b46df62"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+RefractiveIndex = "97a43521-7681-4ec2-835f-5b8ab7e7617e"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 Unzip = "41fe7b60-77ed-43a1-b4f0-825fd5a5650d"
 
 [compat]
-GeneralizedTransferMatrixMethod = "~0.2.0"
+GeneralizedTransferMatrixMethod = "~0.2.1"
 Plots = "~1.40.9"
 PlutoUI = "~0.7.60"
+RefractiveIndex = "~0.4.3"
 Unitful = "~1.22.0"
 Unzip = "~0.2.0"
 """
@@ -200,7 +197,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.11.1"
 manifest_format = "2.0"
-project_hash = "e854fb710ab8201ae7b797c6480d57b9d630dbfa"
+project_hash = "6ad91c92cb1d9808faa26a3ea56ab83cf71011b4"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -225,6 +222,12 @@ version = "1.11.0"
 [[deps.Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 version = "1.11.0"
+
+[[deps.BasicInterpolators]]
+deps = ["LinearAlgebra", "Memoize", "Random"]
+git-tree-sha1 = "3f7be532673fc4a22825e7884e9e0e876236b12a"
+uuid = "26cce99e-4866-4b6d-ab74-862489e035e0"
+version = "0.7.1"
 
 [[deps.BitFlags]]
 git-tree-sha1 = "0691e34b3bb8be9307330f88d1a3c3f25466c24d"
@@ -251,9 +254,9 @@ version = "0.7.6"
 
 [[deps.ColorSchemes]]
 deps = ["ColorTypes", "ColorVectorSpace", "Colors", "FixedPointNumbers", "PrecompileTools", "Random"]
-git-tree-sha1 = "c785dfb1b3bfddd1da557e861b919819b82bbe5b"
+git-tree-sha1 = "26ec26c98ae1453c692efded2b17e15125a5bea1"
 uuid = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
-version = "3.27.1"
+version = "3.28.0"
 
 [[deps.ColorTypes]]
 deps = ["FixedPointNumbers", "Random"]
@@ -415,24 +418,25 @@ version = "3.4.0+2"
 
 [[deps.GR]]
 deps = ["Artifacts", "Base64", "DelimitedFiles", "Downloads", "GR_jll", "HTTP", "JSON", "Libdl", "LinearAlgebra", "Preferences", "Printf", "Qt6Wayland_jll", "Random", "Serialization", "Sockets", "TOML", "Tar", "Test", "p7zip_jll"]
-git-tree-sha1 = "424c8f76017e39fdfcdbb5935a8e6742244959e8"
+git-tree-sha1 = "9bf00ba4c45867c86251a7fd4cb646dcbeb41bf0"
 uuid = "28b8d3ca-fb5f-59d9-8090-bfdbd6d07a71"
-version = "0.73.10"
+version = "0.73.12"
 
 [[deps.GR_jll]]
 deps = ["Artifacts", "Bzip2_jll", "Cairo_jll", "FFMPEG_jll", "Fontconfig_jll", "FreeType2_jll", "GLFW_jll", "JLLWrappers", "JpegTurbo_jll", "Libdl", "Libtiff_jll", "Pixman_jll", "Qt6Base_jll", "Zlib_jll", "libpng_jll"]
-git-tree-sha1 = "b90934c8cb33920a8dc66736471dc3961b42ec9f"
+git-tree-sha1 = "36d5430819123553bf31dfdceb3653ca7d9e62d7"
 uuid = "d2c73de3-f751-5644-a686-071e5b155ba9"
-version = "0.73.10+0"
+version = "0.73.12+0"
 
 [[deps.GeneralizedTransferMatrixMethod]]
 deps = ["LinearAlgebra", "StaticArrays", "UnPack"]
-git-tree-sha1 = "784804c8c03f0731394f0b68dd7aa146f535efe7"
+git-tree-sha1 = "470d2532a9130f4af52280b48182ed1bcad8ec31"
 uuid = "a1920c5b-c27b-4422-a8d5-0f4c3b46df62"
-version = "0.2.0"
-weakdeps = ["Unitful"]
+version = "0.2.1"
+weakdeps = ["RefractiveIndex", "Unitful"]
 
     [deps.GeneralizedTransferMatrixMethod.extensions]
+    RefractiveIndexExt = "RefractiveIndex"
     UnitfulExt = "Unitful"
 
 [[deps.Gettext_jll]]
@@ -706,6 +710,12 @@ git-tree-sha1 = "c13304c81eec1ed3af7fc20e75fb6b26092a1102"
 uuid = "442fdcdd-2543-5da2-b0f3-8c86c306513e"
 version = "0.3.2"
 
+[[deps.Memoize]]
+deps = ["MacroTools"]
+git-tree-sha1 = "2b1dfcba103de714d31c033b5dacc2e4a12c7caa"
+uuid = "c03570c3-d221-55d1-a50c-7939bbd78826"
+version = "0.4.4"
+
 [[deps.Missings]]
 deps = ["DataAPI"]
 git-tree-sha1 = "ec4f7fbeab05d7747bdf98eb74d130a2a2ed298d"
@@ -862,9 +872,9 @@ uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 version = "1.11.0"
 
 [[deps.PtrArrays]]
-git-tree-sha1 = "77a42d78b6a92df47ab37e177b2deac405e1c88f"
+git-tree-sha1 = "1d36ef11a9aaf1e8b74dacc6a731dd1de8fd493d"
 uuid = "43287f4e-b6f4-7ad1-bb20-aadabca52c3d"
-version = "1.2.1"
+version = "1.3.0"
 
 [[deps.Qt6Base_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Fontconfig_jll", "Glib_jll", "JLLWrappers", "Libdl", "Libglvnd_jll", "OpenSSL_jll", "Vulkan_Loader_jll", "Xorg_libSM_jll", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Xorg_libxcb_jll", "Xorg_xcb_util_cursor_jll", "Xorg_xcb_util_image_jll", "Xorg_xcb_util_keysyms_jll", "Xorg_xcb_util_renderutil_jll", "Xorg_xcb_util_wm_jll", "Zlib_jll", "libinput_jll", "xkbcommon_jll"]
@@ -916,6 +926,12 @@ version = "0.6.12"
 git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
 uuid = "189a3867-3050-52da-a836-e630ba90ab69"
 version = "1.2.2"
+
+[[deps.RefractiveIndex]]
+deps = ["BasicInterpolators", "DelimitedFiles", "HTTP", "Pkg", "PrecompileTools", "Scratch", "Serialization", "Unitful", "YAML"]
+git-tree-sha1 = "20cfe63d90ac5413c9b1c02a1e20e16ac8305eee"
+uuid = "97a43521-7681-4ec2-835f-5b8ab7e7617e"
+version = "0.4.3"
 
 [[deps.RelocatableFolders]]
 deps = ["SHA", "Scratch"]
@@ -1016,6 +1032,12 @@ git-tree-sha1 = "29321314c920c26684834965ec2ce0dacc9cf8e5"
 uuid = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 version = "0.34.4"
 
+[[deps.StringEncodings]]
+deps = ["Libiconv_jll"]
+git-tree-sha1 = "b765e46ba27ecf6b44faf70df40c57aa3a547dcb"
+uuid = "69024149-9ee7-55f6-a4c4-859efe599b68"
+version = "0.3.7"
+
 [[deps.StyledStrings]]
 uuid = "f489334b-da3d-4c2e-b8f0-e476e12c162b"
 version = "1.11.0"
@@ -1052,9 +1074,9 @@ uuid = "3bb67fe8-82b1-5028-8e26-92a6c54297fa"
 version = "0.11.3"
 
 [[deps.Tricks]]
-git-tree-sha1 = "7822b97e99a1672bfb1b49b668a6d46d58d8cbcb"
+git-tree-sha1 = "6cae795a5a9313bbb4f60683f7263318fc7d1505"
 uuid = "410a4b4d-49e4-4fbc-ab6d-cb71b17b3775"
-version = "0.1.9"
+version = "0.1.10"
 
 [[deps.URIs]]
 git-tree-sha1 = "67db6cc7b3821e19ebe75791a9dd19c9b1188f2b"
@@ -1286,6 +1308,12 @@ git-tree-sha1 = "6dba04dbfb72ae3ebe5418ba33d087ba8aa8cb00"
 uuid = "c5fb5394-a638-5e4d-96e5-b29de1b5cf10"
 version = "1.5.1+0"
 
+[[deps.YAML]]
+deps = ["Base64", "Dates", "Printf", "StringEncodings"]
+git-tree-sha1 = "dea63ff72079443240fbd013ba006bcbc8a9ac00"
+uuid = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
+version = "0.4.12"
+
 [[deps.Zlib_jll]]
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
@@ -1410,6 +1438,7 @@ version = "1.4.1+2"
 # ╠═5f7ce525-a29c-4e97-9271-333ae3111d5e
 # ╠═aae35e3e-4e40-4395-8876-c20235b6b2d2
 # ╠═18352243-7a5c-4143-8863-c44ebf7d13c7
+# ╠═535547e5-5be3-4a38-8f73-e3ea2a6a2289
 # ╠═db7cbb0f-fa72-4c5e-b100-979b2e3e0ff9
 # ╟─559b2bd0-d40c-11ef-33df-67632fdd3326
 # ╟─49d83ca8-e382-48fe-a440-85a6a555c670
