@@ -195,7 +195,7 @@ Unzip = "~0.2.0"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.1"
+julia_version = "1.11.3"
 manifest_format = "2.0"
 project_hash = "6ad91c92cb1d9808faa26a3ea56ab83cf71011b4"
 
@@ -1459,7 +1459,7 @@ version = "1.4.1+2"
 # ╟─3eb0d2b7-5490-47e3-abe5-d6662664e3f3
 # ╠═efb70030-a5f0-43a7-867d-6c4ee8885355
 # ╟─bcad1a5f-3ad5-45a7-b7c7-40df5a1b80de
-# ╟─fb9643c4-0c92-41f3-a51e-1d244a40bee6
+# ╠═fb9643c4-0c92-41f3-a51e-1d244a40bee6
 # ╟─b7bed1a7-49ff-41c7-ae81-e5bdfcfadbfe
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
