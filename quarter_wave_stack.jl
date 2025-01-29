@@ -153,7 +153,7 @@ Now we can define a function that returns the reflectivity of the previously def
 """
 
 # ╔═╡ f9ed5d1e-0571-471a-ad05-e649e523f782
-function PC_reflection(λ, d₁, d₂, N)
+function Bragg_reflection(λ, d₁, d₂, N)
 	# The function returns the tuple (Rₚₚ, Rₛₛ, Rₚₛ, Rₛₚ) but we only store Rₚₚ
 	Rₚₚ,_,_,_ = calculate_reflection(λ, 0°, S(d₁, d₂, N))
 	Rₚₚ
@@ -194,11 +194,11 @@ md"""
 """
 
 # ╔═╡ d177d821-75bf-4268-aadb-1a1c43870ce3
-R_PC = PC_reflection.(λ, d_SiO₂, d_TiO₂, N)
+R_Bragg = Bragg_reflection.(λ, d_SiO₂, d_TiO₂, N)
 
 # ╔═╡ 5afa9acf-739e-479b-896c-29e18fd4c8c2
 begin
-	plot(λ, R_PC, label = string.(N) .* " Layer" .* [n ≠ 1 ? "s" : "" for n in N],
+	plot(λ, R_Bragg, label = string.(N) .* " Layer" .* [n ≠ 1 ? "s" : "" for n in N],
 		xlabel = "Wavelength",
 		ylabel = "Reflectivity",
 		title = "Distributed Bragg reflector"
@@ -226,7 +226,7 @@ We can use the [PlutoUI.jl](https://github.com/JuliaPluto/PlutoUI.jl) to interac
 @bindname N_Slider Slider(1:50, show_value=true, default=5)
 
 # ╔═╡ 252395fa-52de-44a8-b03b-621efccc558e
-plot(λ, PC_reflection.(λ, d₁_Slider, d₂_Slider, N_Slider),
+plot(λ, Bragg_reflection.(λ, d₁_Slider, d₂_Slider, N_Slider),
 	xlabel = "Wavelength",
 	ylabel = "Reflectivity",
 	title = "Interactivity",
@@ -1518,7 +1518,7 @@ version = "1.4.1+2"
 # ╟─17600500-ce03-4021-b07c-12fdeaaaa487
 # ╟─ab6fe00b-e5ad-45ba-9079-d4506d496edb
 # ╠═d761e097-8fd8-4dd4-b7be-1ae4f85a90e8
-# ╠═69785d00-f647-40e3-b01c-18fc01956443
+# ╟─69785d00-f647-40e3-b01c-18fc01956443
 # ╠═f9ed5d1e-0571-471a-ad05-e649e523f782
 # ╟─547f299a-a727-4116-9868-695188f3e378
 # ╠═4ab4d121-4eae-4d40-89ed-68b06ff64b45
